@@ -1,0 +1,48 @@
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+ion-item {
+    border-radius: 12px;
+    margin-bottom: 5px;
+}
+
+ion-label {
+    color: var(--ion-color-medium);
+    font-size: 14px;
+    font-weight: 500;
+    text-align: left;
+}
+
+.success-message {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.submit-button {
+    margin-top: 20px;
+    --ion-color-primary: #3880ff;
+    --box-shadow: 0 4px 8px rgba(56, 128, 255, 0.4);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+
+    &[disabled] {
+    --ion-color-primary: #f52411;
+    --box-shadow: 0 4px 8px rgba(219, 45, 45, 0.4);
+    cursor: not-allowed;
+    opacity: 0.7;
+    }
+}
+
+.submit-button:hover {
+    transform: scale(1.05);
+}
+
+@media (hover: hover) {
+    ion-button.submit-button:hover:not([disabled]) {
+        filter: brightness(1.1);
+    }
+}
