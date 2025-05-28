@@ -1,21 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IonicModule } from '@ionic/angular';
-import { ReactiveFormsModule, FormsModule, Validators, FormBuilder } from '@angular/forms';
+import {
+  ReactiveFormsModule,
+  FormsModule,
+  Validators,
+  FormBuilder,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-contact',
   templateUrl: './contact.page.html',
   styleUrls: ['./contact.page.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, ReactiveFormsModule, FormsModule]
+  imports: [IonicModule, CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class ContactPage {
   contactForm = this.fb.group({
     name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     subject: ['', Validators.required],
-    message: ['', [Validators.required, Validators.minLength(10)]]
+    message: ['', [Validators.required, Validators.minLength(10)]],
   });
 
   submitted = false;

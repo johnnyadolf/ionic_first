@@ -8,17 +8,23 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <form [formGroup]="contactForm" (ngSubmit)="onSubmit()" novalidate>
-
     <ion-item>
       <ion-label position="floating">Name</ion-label>
       <ion-input formControlName="name" type="text" required></ion-input>
     </ion-item>
-    <ion-note color="danger" *ngIf="(f.name.touched || submitted) && f.name.errors?.['required']" slot="error">
+    <ion-note
+      color="danger"
+      *ngIf="(f.name.touched || submitted) && f.name.errors?.['required']"
+      slot="error"
+    >
       Name is required
     </ion-note>
-    <ion-note color="danger" *ngIf="(f.name.touched || submitted) && f.name.errors?.['minlength']" slot="error">
+    <ion-note
+      color="danger"
+      *ngIf="(f.name.touched || submitted) && f.name.errors?.['minlength']"
+      slot="error"
+    >
       Name must be at least 3 characters
     </ion-note>
 
@@ -26,19 +32,30 @@
       <ion-label position="floating">Email</ion-label>
       <ion-input formControlName="email" type="email" required></ion-input>
     </ion-item>
-    <ion-note color="danger" *ngIf="(f.email.touched || submitted) && f.email.errors?.['required']" slot="error">
+    <ion-note
+      color="alert"
+      *ngIf="(f.email.touched || submitted) && f.email.errors?.['required']"
+      slot="error"
+    >
       Email is required
     </ion-note>
-    <ion-note color="danger" *ngIf="(f.email.touched || submitted) && f.email.errors?.['email']" slot="error">
+    <ion-note
+      color="danger"
+      *ngIf="(f.email.touched || submitted) && f.email.errors?.['email']"
+      slot="error"
+    >
       Invalid email address
     </ion-note>
-
 
     <ion-item>
       <ion-label position="floating">Subject</ion-label>
       <ion-input formControlName="subject" type="text" required></ion-input>
     </ion-item>
-    <ion-note color="danger" *ngIf="(f.subject.touched || submitted) && f.subject.errors?.['required']" slot="error">
+    <ion-note
+      color="danger"
+      *ngIf="(f.subject.touched || submitted) && f.subject.errors?.['required']"
+      slot="error"
+    >
       Subject is required
     </ion-note>
 
@@ -47,7 +64,13 @@
       <ion-textarea formControlName="message" rows="6"></ion-textarea>
     </ion-item>
 
-    <ion-button expand="block" type="submit" [disabled]="contactForm.invalid" shape="round" class="submit-button">
+    <ion-button
+      expand="block"
+      type="submit"
+      [disabled]="contactForm.invalid"
+      shape="round"
+      class="submit-button"
+    >
       Send Message
     </ion-button>
   </form>
