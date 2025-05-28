@@ -15,7 +15,7 @@
   <ion-grid class="nav-grid">
     <ion-row>
       <ion-col size="6">
-        <ion-card routerLink='/'>
+        <ion-card button [routerLink]="['/tasks-page']">
           <ion-card-header>
             <ion-icon name="checkmark-done-outline"></ion-icon>
             <ion-card-title>Tasks</ion-card-title>
@@ -24,7 +24,7 @@
         </ion-card>
       </ion-col>
       <ion-col size="6">
-        <ion-card routerLink='/about'>
+        <ion-card routerLink="/about">
           <ion-card-header>
             <ion-icon name="information-circle-outline"></ion-icon>
             <ion-card-title>About</ion-card-title>
@@ -35,7 +35,7 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-card routerLink='/contact'>
+        <ion-card routerLink="/contact">
           <ion-card-header>
             <ion-icon name="mail-outline"></ion-icon>
             <ion-card-title>Contact</ion-card-title>
@@ -46,7 +46,17 @@
     </ion-row>
   </ion-grid>
 
-  <ion-footer class="footer-note">
-    <p>Crafted with ❤️ using Ionic + Angular</p>
+  <ion-footer class="footer">
+    <ion-toolbar>
+      <ion-title>© 2025 SmartTask</ion-title>
+      <ion-buttons slot="end">
+        <ion-button href="https://github.com/johnnyadolf/ionic_first">
+          <ion-icon slot="icon-only" name="logo-github"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <div>
+      <p>Made with Ionic and Angular</p>
+    </div>
   </ion-footer>
 </ion-content>

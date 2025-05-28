@@ -8,15 +8,23 @@ export const routes: Routes = [
   },
   {
     path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
+    loadComponent: () =>
+      import('./pages/home/home.page').then((m) => m.HomePage),
   },
   {
     path: 'contact',
-    loadComponent: () => import('./contact/contact.page').then( m => m.ContactPage)
+    loadComponent: () =>
+      import('./pages/contact/contact.page').then((m) => m.ContactPage),
   },
   {
     path: 'about',
-    loadComponent: () => import('./about/about.page').then( m => m.AboutPage)
+    loadComponent: () =>
+      import('./pages/about/about.page').then((m) => m.AboutPage),
+  },
+  {
+    path: 'tasks-page',
+    loadComponent: () =>
+      import('./pages/tasks-page/tasks-page.page').then((m) => m.TasksPagePage),
   },
   {
     path: '**',

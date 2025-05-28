@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Tasks</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">tasksPage</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>Tasks</ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            Manage your tasks efficiently with SmartTask.
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-button class="add-task-btn" (click)="openAddTaskModal()">
+          <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+          Add New Task
+        </ion-button>
+
+        <ion-modal
+          [isOpen]="showAddTaskModal"
+          (didDismiss)="closeAddTaskModal()"
+        >
+          <ng-template>
+            <ion-header>
+              <ion-toolbar>
+                <ion-title>Add Task</ion-title>
+                <ion-buttons slot="end">
+                  <ion-button (click)="closeAddTaskModal()">Close</ion-button>
+                </ion-buttons>
+              </ion-toolbar>
+            </ion-header>
+            <ion-content class="ion-padding">
+              <form #taskForm="ngForm" (ngSubmit)="addTask()">
+                <ion-item>
+                  <ion-label position="floating">Title</ion-label>
+                  <ion-input
+                    [(ngModel)]="newTask.title"
+                    name="title"
+                    required
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Description</ion-label>
+                  <ion-input
+                    [(ngModel)]="newTask.description"
+                    name="description"
+                  ></ion-input>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Due Date</ion-label>
+                  <ion-datetime
+                    [(ngModel)]="newTask.dueDate"
+                    name="dueDate"
+                  ></ion-datetime>
+                </ion-item>
+                <ion-item>
+                  <ion-label position="floating">Priority</ion-label>
+                  <ion-select
+                    [(ngModel)]="newTask.priority"
+                    name="priority"
+                    required
+                    interface="popover"
+                    placeholder="Select priority"
+                  >
+                    <ion-select-option value="low">Low</ion-select-option>
+                    <ion-select-option value="medium">Medium</ion-select-option>
+                    <ion-select-option value="high">High</ion-select-option>
+                  </ion-select>
+                </ion-item>
+                <ion-button
+                  expand="block"
+                  type="submit"
+                  [disabled]="!taskForm.form.valid"
+                >
+                  {{ editingTaskId === null ? 'Add Task' : 'Save Changes' }}
+                </ion-button>
+              </form>
+            </ion-content>
+          </ng-template>
+        </ion-modal>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12">
+        <ion-list>
+          <!-- This is where tasks will be displayed  -->
+          <ion-item lines="none">
+            <ion-label>
+              <h2>Task List</h2>
+            </ion-label>
+          </ion-item>
+          <!-- Loop through tasks and display them -->
+          <ion-item *ngFor="let task of taskItems()">
+            <ion-label>
+              <h2>{{ task.title }}</h2>
+              <p>{{ task.description }}</p>
+              <p>Due: {{ task.dueDate | date }}</p>
+              <p>Status: {{ task.completed }}</p>
+              <p>Priority: {{ task.priority }}</p>
+            </ion-label>
+            <ion-button fill="clear" slot="end" (click)="editTask(task)">
+              Edit
+            </ion-button>
+            <ion-button fill="clear" slot="end" (click)="deleteTask(task)">
+              Delete
+            </ion-button>
+          </ion-item>
+          <!-- Placeholder for tasks -->
+          <!-- This will be dynamically populated with tasks -->
+          <ion-item *ngIf="taskItems().length === 0" lines="none">
+            <ion-label>No tasks available. Please add a task.</ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
