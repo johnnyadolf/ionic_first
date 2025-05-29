@@ -108,7 +108,7 @@
             </ion-label>
           </ion-item>
           <!-- Loop through tasks and display them -->
-          <ion-item *ngFor="let task of taskItems()">
+          <ion-item *ngFor="let task of paginatedTasks">
             <ion-label>
               <h2>{{ task.title }}</h2>
               <p>{{ task.description }}</p>
@@ -129,6 +129,28 @@
             <ion-label>No tasks available. Please add a task.</ion-label>
           </ion-item>
         </ion-list>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" class="ion-text-center" *ngIf="totalPages > 1">
+        <ion-button (click)="prevPage()" [disabled]="currentPage === 1">
+          Previous
+        </ion-button>
+        <ng-container *ngFor="let page of paginationPages">
+          <ion-button
+            *ngIf="page !== '...'; else ellipsis"
+            [fill]="currentPage === page ? 'solid' : 'outline'"
+            (click)="goToPage(toNumber(page))"
+          >
+            {{ page }}
+          </ion-button>
+          <ng-template #ellipsis>
+            <ion-button disabled style="pointer-events: none;">...</ion-button>
+          </ng-template>
+        </ng-container>
+        <ion-button (click)="nextPage()" [disabled]="currentPage === totalPages">
+          Next
+        </ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>

@@ -16,6 +16,8 @@ import {
   IonCardContent,
   IonButton,
   IonButtons,
+  IonToggle,
+  IonMenuToggle,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -24,12 +26,15 @@ import {
   logoGithub,
   mailOutline,
 } from 'ionicons/icons';
+import { AppComponent } from 'src/app/app.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
+    IonToggle,
     IonButtons,
     IonButton,
     IonHeader,
@@ -46,9 +51,12 @@ import {
     IonCardTitle,
     IonCardContent,
     RouterLink,
+    FormsModule,
   ],
 })
 export class HomePage {
+  darkMode = false;
+
   constructor() {
     addIcons({
       checkmarkDoneOutline,
@@ -56,5 +64,9 @@ export class HomePage {
       mailOutline,
       logoGithub,
     });
+  }
+
+  toggleDarkMode(event: any) {
+    document.body.classList.toggle('dark', event.detail.checked);
   }
 }

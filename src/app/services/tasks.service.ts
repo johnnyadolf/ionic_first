@@ -1,35 +1,17 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Task } from './../model/task.type';
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TasksService {
-  taskItems: Array<Task> = [
-    {
-      id: 1,
-      title: 'Task 1',
-      completed: false,
-      dueDate: new Date('2023-10-01'),
-      priority: 'medium',
-      isDeleted: false,
-    },
-    {
-      id: 2,
-      title: 'Task 2',
-      completed: true,
-      dueDate: new Date('2023-10-02'),
-      priority: 'high',
-      isDeleted: false,
-    },
-    {
-      id: 3,
-      title: 'Task 3',
-      completed: false,
-      dueDate: new Date('2023-10-03'),
-      priority: 'low',
-      isDeleted: false,
-    },
-  ];
-  constructor() {}
+  http = inject(HttpClient);
+  getTasksFromAPI() {
+    const url = 'https://api.json-generator.com/templates/YgEoSFVRfV4G/data';
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer yfjdxpyafvqq957te0uurzodfm4qo301cvvsrb58',
+    });
+    return this.http.get<Array<Task>>(url, { headers });
+  }
 }

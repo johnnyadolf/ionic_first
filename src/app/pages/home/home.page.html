@@ -1,7 +1,13 @@
 <ion-header>
   <ion-toolbar>
     <ion-title>SmartTask</ion-title>
-    <!--<app-dark-mode-toggle slot="end"></app-dark-mode-toggle>-->
+    <ion-toggle
+      slot="end"
+      [(ngModel)]="darkMode"
+      (ionChange)="toggleDarkMode($event)"
+      aria-label="Dark Mode"
+    >
+    </ion-toggle>
   </ion-toolbar>
 </ion-header>
 
