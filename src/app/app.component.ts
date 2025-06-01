@@ -8,11 +8,5 @@ import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
   imports: [IonApp, IonRouterOutlet],
 })
 export class AppComponent {
-  darkMode = false;
-
   constructor() {}
-
-  toggleDarkMode(event: any) {
-    document.body.classList.toggle('dark', event.detail.checked);
-  }
 }

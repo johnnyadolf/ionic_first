@@ -26,10 +26,11 @@ import {
   IonInput,
   IonDatetime,
   IonSelect,
+  IonCheckbox,
 } from '@ionic/angular/standalone';
 import { TasksService } from 'src/app/services/tasks.service';
 import { catchError } from 'rxjs';
-import { addCircleOutline } from 'ionicons/icons';
+import { addCircleOutline, trashOutline } from 'ionicons/icons';
 import { addIcons } from 'ionicons';
 
 @Component({
@@ -38,6 +39,7 @@ import { addIcons } from 'ionicons';
   styleUrls: ['./tasks-page.page.scss'],
   standalone: true,
   imports: [
+    IonCheckbox,
     IonModal,
     IonButtons,
     IonBackButton,
@@ -86,7 +88,8 @@ export class TasksPagePage implements OnInit {
 
   get paginatedTasks(): Task[] {
     const start = (this.currentPage - 1) * this.pageSize;
-    return this.taskItems().slice(start, start + this.pageSize);
+    const end = start + this.pageSize;
+    return this.taskItems().slice(start, end);
   }
 
   get paginationPages(): (number | string)[] {
@@ -101,31 +104,23 @@ export class TasksPagePage implements OnInit {
     }
 
     // First 3 pages
-    if (current <= 2) {
+    if (current <= 3) {
       pages.push(1, 2, 3);
+      if (current === 3) {
+        pages.push(4);
+      }
       pages.push('...');
       pages.push(total);
-      return pages;
-    }
-
-    if (current === 3) {
-      pages.push(1, 2, 3, 4);
-      pages.push('...');
-      pages.push(total);
-      return pages;
-    }
-
-    if (current === total - 2) {
-      pages.push(1);
-      pages.push('...');
-      pages.push(total - 3, total - 2, total - 1, total);
       return pages;
     }
 
     // Last 3 pages
-    if (current >= total - 1) {
+    if (current >= total - 2) {
       pages.push(1);
       pages.push('...');
+      if (current === total - 2) {
+        pages.push(total - 3);
+      }
       pages.push(total - 2, total - 1, total);
       return pages;
     }
@@ -271,14 +266,25 @@ export class TasksPagePage implements OnInit {
     // Console log the task before deleting
     console.log('Task before deleting:', task);
     const updated = this.taskItems().filter((t: Task) => t.id !== task.id);
+
+    // Calculate new total pages after deletion
+    const newTotalPages = Math.ceil(updated.length / this.pageSize) || 1;
+
+    // If we're on the last page and it's now empty (except when it's page 1)
+    if (this.currentPage > 1 && this.currentPage > newTotalPages) {
+      // Go to the first page or adjust to the last available page
+      this.currentPage = Math.max(1, newTotalPages);
+    }
+
     this.taskItems.set(updated);
   }
 
   toggleTaskCompletion(task: Task): void {
-    const updated = this.taskItems().map((t: Task) =>
-      t.id === task.id ? { ...t, completed: !t.completed } : t
+    this.taskItems.update((tasks) =>
+      tasks.map((t) =>
+        t.id === task.id ? { ...t, completed: !t.completed } : t
+      )
     );
-    this.taskItems.set(updated);
   }
 
   openAddTaskModal() {
@@ -332,9 +338,26 @@ export class TasksPagePage implements OnInit {
     return Number(value);
   }
 
+  deleteCompletedTasks(): void {
+    const updated = this.taskItems().filter((t) => !t.completed);
+
+    // Adjust pagination if needed
+    const newTotalPages = Math.ceil(updated.length / this.pageSize) || 1;
+    if (this.currentPage > 1 && this.currentPage > newTotalPages) {
+      this.currentPage = Math.max(1, newTotalPages);
+    }
+
+    this.taskItems.set(updated);
+  }
+
+  get hasCompletedTasks(): boolean {
+    return this.taskItems().some((t) => t.completed);
+  }
+
   constructor() {
     addIcons({
       addCircleOutline,
+      trashOutline,
     });
   }
 }
