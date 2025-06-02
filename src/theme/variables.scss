@@ -7,7 +7,7 @@
   --ion-color-danger: #d32f2f; // Strong Red
   --ion-color-dark: #212121; // Almost Black
   --ion-color-medium: #757575; // Medium Gray
-  --ion-color-light: #f5f5f5; // Very Light Gray
+  --ion-color-light: #acacac; // Very Light Gray
   --ion-background-color: #f5f5f5;
   --ion-text-color: #212121;
 }
@@ -15,9 +15,6 @@
 body.dark {
   --ion-background-color: #181c24; // Deep Navy
   --ion-text-color: #f5f5f5; // Very Light Gray
-  --ion-card-background: #232a34; // Slightly lighter navy
-  --ion-item-background: #232a34;
-  --ion-toolbar-background: #232a34;
   --ion-color-primary: #64b5f6; // Lighter Blue
   --ion-color-secondary: #ffb74d; // Soft Orange
   --ion-color-tertiary: #43e97b; // Bright Green
