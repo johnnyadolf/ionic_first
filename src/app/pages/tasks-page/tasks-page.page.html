@@ -17,7 +17,7 @@
   <ion-grid>
     <ion-row>
       <ion-col size="12">
-        <ion-card>
+        <ion-card class="intro-card">
           <ion-card-header>
             <ion-card-title>Tasks</ion-card-title>
           </ion-card-header>
@@ -56,7 +56,9 @@
           <ng-template>
             <ion-header>
               <ion-toolbar>
-                <ion-title>Add Task</ion-title>
+                <ion-title>
+                  {{ editingTaskId !== null ? 'Edit Task' : 'Add Task' }}
+                </ion-title>
                 <ion-buttons slot="end">
                   <ion-button (click)="closeAddTaskModal()">Close</ion-button>
                 </ion-buttons>
@@ -65,34 +67,40 @@
             <ion-content class="ion-padding">
               <form #taskForm="ngForm" (ngSubmit)="addTask()">
                 <ion-item>
-                  <ion-label position="floating">Title</ion-label>
                   <ion-input
+                    label="Title"
+                    labelPlacement="stacked"
                     [(ngModel)]="newTask.title"
                     name="title"
                     required
+                    placeholder="Enter task title"
                   ></ion-input>
                 </ion-item>
                 <ion-item>
-                  <ion-label position="floating">Description</ion-label>
                   <ion-input
+                    label="Description"
+                    labelPlacement="stacked"
                     [(ngModel)]="newTask.description"
                     name="description"
+                    placeholder="Enter task description"
                   ></ion-input>
                 </ion-item>
                 <ion-item>
-                  <ion-label position="floating">Due Date</ion-label>
                   <ion-datetime
+                    label="Due Date"
+                    labelPlacement="stacked"
                     [(ngModel)]="newTask.dueDate"
                     name="dueDate"
+                    presentation="date"
+                    placeholder="Select due date"
                   ></ion-datetime>
                 </ion-item>
                 <ion-item>
-                  <ion-label position="floating">Priority</ion-label>
                   <ion-select
+                    label="Priority"
+                    labelPlacement="stacked"
                     [(ngModel)]="newTask.priority"
                     name="priority"
-                    required
-                    interface="popover"
                     placeholder="Select priority"
                   >
                     <ion-select-option value="low">Low</ion-select-option>
@@ -100,12 +108,19 @@
                     <ion-select-option value="high">High</ion-select-option>
                   </ion-select>
                 </ion-item>
+                <ion-item *ngIf="editingTaskId !== null">
+                  <ion-label>Completed</ion-label>
+                  <ion-checkbox
+                    [(ngModel)]="newTask.completed"
+                    name="completed"
+                  ></ion-checkbox>
+                </ion-item>
                 <ion-button
                   expand="block"
                   type="submit"
                   [disabled]="!taskForm.form.valid"
                 >
-                  {{ editingTaskId === null ? 'Add Task' : 'Save Changes' }}
+                  {{ editingTaskId !== null ? 'Update Task' : 'Add Task' }}
                 </ion-button>
               </form>
             </ion-content>
@@ -115,43 +130,146 @@
     </ion-row>
     <ion-row>
       <ion-col size="12">
-        <ion-list>
-          <!-- This is where tasks will be displayed  -->
-          <ion-item lines="none">
-            <ion-label>
-              <h2>Task List</h2>
-            </ion-label>
-          </ion-item>
-          <!-- Loop through tasks and display them -->
-          <ion-item *ngFor="let task of paginatedTasks">
-            <ion-label>
-              <h2>{{ task.title }}</h2>
-              <p>{{ task.description }}</p>
-              <p>Due: {{ task.dueDate | date }}</p>
-              <p>Priority: {{ task.priority }}</p>
-            </ion-label>
-            <ion-checkbox
-              slot="start"
-              [checked]="task.completed"
-              (ionChange)="toggleTaskCompletion(task)"
-            ></ion-checkbox>
-            <ion-button fill="clear" slot="end" (click)="editTask(task)">
-              Edit
-            </ion-button>
-            <ion-button fill="clear" slot="end" (click)="deleteTask(task)">
-              Delete
-            </ion-button>
-          </ion-item>
-          <!-- Placeholder for tasks -->
-          <!-- This will be dynamically populated with tasks -->
-          <ion-item *ngIf="taskItems().length === 0" lines="none">
-            <ion-label>No tasks available. Please add a task.</ion-label>
-          </ion-item>
-        </ion-list>
+        <ion-item lines="none" class="filter-controls">
+          <ion-input
+            placeholder="🔍 Search by title or description..."
+            [(ngModel)]="searchTerm"
+            clearInput
+            debounce="300"
+          ></ion-input>
+          <ion-select
+            class="sort-by-select"
+            [(ngModel)]="sortBy"
+            interface="popover"
+            aria-label="Sort by"
+          >
+            <ion-select-option value="id">ID</ion-select-option>
+            <ion-select-option value="title">Title</ion-select-option>
+            <ion-select-option value="dueDate">Due Date</ion-select-option>
+            <ion-select-option value="priority">Priority</ion-select-option>
+          </ion-select>
+          <ion-select
+            class="sort-order-select"
+            [(ngModel)]="sortOrder"
+            interface="popover"
+            aria-label="Sort order"
+          >
+            <ion-select-option value="asc">Ascending</ion-select-option>
+            <ion-select-option value="desc">Descending</ion-select-option>
+          </ion-select>
+          <ion-button
+            class="reset-filters-button"
+            fill="clear"
+            (click)="resetFilters()"
+          >
+            <ion-icon
+              name="refresh-outline"
+              slot="icon-only"
+              aria-label="Reset filters"
+            ></ion-icon>
+          </ion-button>
+        </ion-item>
       </ion-col>
     </ion-row>
     <ion-row>
-      <ion-col size="12" class="ion-text-center" *ngIf="totalPages > 1">
+      <ion-col size="12">
+        <div class="task-list-container">
+          <div
+            class="task-animation-wrapper"
+            *ngFor="let task of paginatedTasks; let i = index"
+            [@taskAnim]
+          >
+            <ion-card
+              class="task-card"
+              [class.completed-card]="task.completed"
+              (click)="toggleTaskCompletion(task)"
+            >
+              <ion-card-header>
+                <div class="task-card-header-content">
+                  <div class="task-info-checkbox-group">
+                    <ion-checkbox
+                      [checked]="task.completed"
+                      (ionChange)="toggleTaskCompletion(task)"
+                      aria-label="Toggle task completion"
+                    ></ion-checkbox>
+                    <div class="task-text-content">
+                      <h2
+                        class="task-title"
+                        [class.completed-task]="task.completed"
+                      >
+                        {{ task.title }}
+                      </h2>
+                      <p
+                        *ngIf="task.description"
+                        class="task-description"
+                        [class.completed-task]="task.completed"
+                      >
+                        {{ task.description }}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="task-actions">
+                    <ion-button
+                      fill="clear"
+                      size="small"
+                      (click)="editTask(task)"
+                      aria-label="Edit task"
+                    >
+                      <ion-icon
+                        name="create-outline"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                    <ion-button
+                      fill="clear"
+                      size="small"
+                      color="danger"
+                      (click)="deleteTask(task)"
+                      aria-label="Delete task"
+                    >
+                      <ion-icon
+                        name="trash-outline"
+                        slot="icon-only"
+                      ></ion-icon>
+                    </ion-button>
+                  </div>
+                </div>
+              </ion-card-header>
+              <ion-card-content *ngIf="task.dueDate || task.priority">
+                <div class="task-meta">
+                  <span *ngIf="task.dueDate" class="task-meta-duedate">
+                    Due: {{ task.dueDate | date:'shortDate' }}
+                  </span>
+                  <span *ngIf="task.priority" class="task-meta-priority">
+                    Priority: {{ task.priority | titlecase }}
+                  </span>
+                </div>
+              </ion-card-content>
+            </ion-card>
+          </div>
+          <ion-item
+            *ngIf="!(isLoading$ | async) && !taskItems()?.length"
+            lines="none"
+            class="no-tasks-item"
+          >
+            <ion-label>No tasks available. Please add a new task.</ion-label>
+          </ion-item>
+          <ion-item
+            *ngIf="isLoading$ | async"
+            lines="none"
+            class="loading-tasks-item"
+          >
+            <ion-label>Loading tasks...</ion-label>
+          </ion-item>
+        </div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col
+        size="12"
+        class="ion-text-center pagination-controls"
+        *ngIf="totalPages > 1"
+      >
         <ion-button (click)="prevPage()" [disabled]="currentPage === 1">
           Previous
         </ion-button>
@@ -164,7 +282,7 @@
             {{ page }}
           </ion-button>
           <ng-template #ellipsis>
-            <ion-button disabled style="pointer-events: none">...</ion-button>
+            <ion-button disabled class="pagination-ellipsis">...</ion-button>
           </ng-template>
         </ng-container>
         <ion-button

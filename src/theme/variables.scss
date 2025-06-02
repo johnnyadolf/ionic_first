@@ -1,13 +1,30 @@
 :root {
-  --ion-color-primary: #4f8cff;
-  --ion-color-secondary: #ffb74d;
-  --ion-color-tertiary: #43e97b;
-  --ion-color-success: #2dd36f;
-  --ion-color-warning: #ffc409;
-  --ion-color-danger: #eb445a;
-  --ion-color-dark: #222428;
-  --ion-color-medium: #92949c;
-  --ion-color-light: #f4f5f8;
-  --ion-background-color: #f4f5f8;
-  --ion-text-color: #222428;
+  --ion-color-primary: #1976d2; // Deep Blue
+  --ion-color-secondary: #ff9800; // Vivid Orange
+  --ion-color-tertiary: #43e97b; // Bright Green
+  --ion-color-success: #00c853; // Emerald
+  --ion-color-warning: #ffd600; // Bright Yellow
+  --ion-color-danger: #d32f2f; // Strong Red
+  --ion-color-dark: #212121; // Almost Black
+  --ion-color-medium: #757575; // Medium Gray
+  --ion-color-light: #f5f5f5; // Very Light Gray
+  --ion-background-color: #f5f5f5;
+  --ion-text-color: #212121;
+}
+
+body.dark {
+  --ion-background-color: #181c24; // Deep Navy
+  --ion-text-color: #f5f5f5; // Very Light Gray
+  --ion-card-background: #232a34; // Slightly lighter navy
+  --ion-item-background: #232a34;
+  --ion-toolbar-background: #232a34;
+  --ion-color-primary: #64b5f6; // Lighter Blue
+  --ion-color-secondary: #ffb74d; // Soft Orange
+  --ion-color-tertiary: #43e97b; // Bright Green
+  --ion-color-success: #00e676; // Neon Green
+  --ion-color-warning: #ffd600; // Bright Yellow
+  --ion-color-danger: #ff5252; // Neon Red
+  --ion-color-dark: #f5f5f5; // Very Light Gray
+  --ion-color-medium: #b0b3b8; // Light Gray
+  --ion-color-light: #232a34; // Slightly lighter navy
 }

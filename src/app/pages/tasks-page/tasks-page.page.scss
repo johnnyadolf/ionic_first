@@ -1,3 +1,7 @@
+ion-content {
+  --background: var(--ion-background-color);
+}
+
 ion-card {
   margin-bottom: 16px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
@@ -10,77 +14,268 @@ ion-list {
 
 ion-item {
   border-radius: 8px;
-  margin-bottom: 8px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  margin-bottom: 8px; // Default margin for items
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); // Subtle shadow for items
+  --padding-start: 12px; // Consistent padding for items
+  --inner-padding-end: 12px;
 }
 
 ion-label h2 {
+  // General h2 styling within labels
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 2px;
 }
 
 ion-label p {
+  // General p styling within labels
   font-size: 0.95rem;
   margin: 0;
 }
 
+// Clear buttons
 ion-button[fill="clear"] {
   color: var(--ion-color-primary);
+  &:hover {
+    color: var(
+      --ion-color-secondary
+    ); // Changed hover to secondary for better contrast
+  }
 }
 
-ion-button[fill="clear"]:hover {
-  color: var(--ion-color-danger);
-}
-
-ion-select,
-ion-input,
-ion-datetime {
-  --padding-start: 0;
-  --padding-end: 0;
-}
-
+// Form specific styling
 form ion-item {
-  margin-bottom: 12px;
+  margin-bottom: 18px;
+  box-shadow: none;
+  --background: var(--ion-color-light);
+  border-radius: 10px;
+}
+
+body.dark form ion-item {
+  --background: var(
+    --ion-item-background-form-dark,
+    var(--ion-background-color-step-150, #2a2a2a)
+  );
 }
 
 ion-button[type="submit"] {
-  margin-top: 12px;
+  margin-top: 18px; // Space above submit button
 }
 
+// Modal styling
 ion-modal {
-  --border-radius: 16px;
+  --border-radius: 18px;
+  .modal-wrapper {
+    // For older Ionic versions, newer use shadow parts
+    padding: 20px;
+  }
+  // For newer Ionic versions, use ::part
+  &::part(content) {
+    border-radius: var(
+      --border-radius
+    ); // Ensure content respects modal border radius
+  }
 }
 
-ion-modal .modal-wrapper {
-  --border-radius: 16px;
-  padding: 20px;
-}
-
-.add-task-btn {
-  width: 100%;
-  border-radius: 24px;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  --background: var(--ion-color-primary);
-  --background-hover: var(--ion-color-secondary);
-  --background-activated: var(--ion-color-secondary);
-  --color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  margin-bottom: 20px;
-}
-
+// Action buttons (Add Task, Delete Completed)
+.add-task-btn,
 .delete-completed-btn {
   width: 100%;
   border-radius: 24px;
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-weight: 600;
-  letter-spacing: 0.02em;
-  --background: var(--ion-color-danger);
-  --background-hover: #ff6f6f;
-  --background-activated: #ff5252;
+  letter-spacing: 0.01em;
   --color: #fff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.07);
+}
+
+.add-task-btn {
+  --background: var(--ion-color-primary);
+  --background-hover: var(--ion-color-primary-shade);
+}
+
+.delete-completed-btn {
+  --background: var(--ion-color-danger);
+  --background-hover: var(--ion-color-danger-shade);
+}
+
+// Filter controls section
+.filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  background: transparent;
+  box-shadow: none;
+
+  ion-input {
+    flex: 1 1 0;
+    min-width: 160px;
+    font-size: 1.05rem;
+  }
+  .sort-by-select,
+  .sort-order-select {
+    min-width: 110px;
+    max-width: 130px;
+  }
+  .reset-filters-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+  }
+}
+
+// Task list and items
+.task-list-container {
+  padding-top: 8px;
+}
+
+.task-animation-wrapper {
+  // The animation itself handles enter/leave transitions.
+  // Static margin for spacing between items can be on task-card.
+}
+
+ion-card.task-card {
+  cursor: pointer;
+  margin-bottom: 24px;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  border: 1.5px solid var(--ion-color-light);
+  background: var(--ion-card-background, #fff);
+  transition: box-shadow 0.2s, border-color 0.2s, transform 0.15s;
+  padding: 0 0 8px 0;
+
+  &:hover {
+    box-shadow: 0 8px 32px rgba(25, 118, 210, 0.1);
+    border-color: var(--ion-color-primary);
+    transform: translateY(-2px) scale(1.01);
+  }
+
+  &.completed-card {
+    background: var(--ion-color-light);
+    opacity: 0.85;
+    border-color: var(--ion-color-medium);
+  }
+}
+
+.task-card-header-content {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 20px 8px 20px;
+  gap: 12px;
+}
+
+.task-info-checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+ion-checkbox {
+  --size: 28px;
+  --checkbox-background-checked: var(--ion-color-primary);
+  --checkbox-background: var(--ion-color-light);
+  margin-top: 2px;
+}
+
+.task-text-content {
+  min-width: 0;
+  flex: 1 1 0;
+}
+
+.task-title {
+  font-size: 1.18rem;
+  font-weight: 700;
+  color: var(--ion-text-color, #222b45);
+  margin: 0 0 2px 0;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.task-description {
+  font-size: 1.01rem;
+  color: var(--ion-color-medium);
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+// Completed task text styling
+.completed-task {
+  text-decoration: line-through;
+  color: var(--ion-color-medium) !important;
+  opacity: 0.7;
+  font-style: italic;
+}
+
+ion-card-content {
+  padding: 0 20px 12px 64px;
+}
+
+.task-meta {
+  font-size: 0.97rem;
+  color: var(--ion-color-medium);
+  display: flex;
+  gap: 18px;
+  margin-top: 2px;
+  flex-wrap: wrap;
+
+  .task-meta-priority {
+    // margin-left: 16px; // Replaced by gap on .task-meta
+  }
+}
+
+.task-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  margin-left: 10px;
+
+  ion-button {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --icon-size: 22px;
+    --color: var(--ion-color-primary);
+    --background: transparent;
+    --box-shadow: none;
+    font-size: 1.1rem;
+    border-radius: 50%;
+    transition: background 0.15s;
+    &:hover {
+      --background: var(--ion-color-primary-tint);
+    }
+    &[color="danger"] {
+      --color: var(--ion-color-danger);
+      &:hover {
+        --background: var(--ion-color-danger-tint);
+      }
+    }
+  }
+}
+
+// No tasks / Loading items
+.no-tasks-item,
+.loading-tasks-item {
+  text-align: center;
+  color: var(--ion-color-medium);
+  padding: 24px 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 1.1rem;
+}
+
+// Pagination
+.pagination-controls {
+  margin-top: 22px;
+  ion-button {
+    margin: 0 2px;
+    font-size: 1.01rem;
+  }
+  .pagination-ellipsis {
+    pointer-events: none;
+    opacity: 0.6;
+  }
 }

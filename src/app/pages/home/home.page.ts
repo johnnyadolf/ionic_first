@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   IonHeader,
@@ -16,6 +16,7 @@ import {
   IonCardContent,
   IonButton,
   IonButtons,
+  IonToggle,
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import {
@@ -26,12 +27,14 @@ import {
 } from 'ionicons/icons';
 import { AppComponent } from 'src/app/app.component';
 import { FormsModule } from '@angular/forms';
+import { DarkModeService } from 'src/app/services/darkMode/dark-mode.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
   imports: [
+    IonToggle,
     IonButtons,
     IonButton,
     IonHeader,
@@ -52,6 +55,7 @@ import { FormsModule } from '@angular/forms';
   ],
 })
 export class HomePage {
+  darkModeService = inject(DarkModeService);
   constructor() {
     addIcons({
       checkmarkDoneOutline,
