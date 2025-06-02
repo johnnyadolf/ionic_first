@@ -14,36 +14,30 @@ ion-list {
 
 ion-item {
   border-radius: 8px;
-  margin-bottom: 8px; // Default margin for items
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03); // Subtle shadow for items
-  --padding-start: 12px; // Consistent padding for items
+  margin-bottom: 8px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
+  --padding-start: 12px;
   --inner-padding-end: 12px;
 }
 
 ion-label h2 {
-  // General h2 styling within labels
   font-size: 1.1rem;
   font-weight: 600;
   margin-bottom: 2px;
 }
 
 ion-label p {
-  // General p styling within labels
   font-size: 0.95rem;
   margin: 0;
 }
 
-// Clear buttons
 ion-button[fill="clear"] {
   color: var(--ion-color-primary);
   &:hover {
-    color: var(
-      --ion-color-secondary
-    ); // Changed hover to secondary for better contrast
+    color: var(--ion-color-secondary);
   }
 }
 
-// Form specific styling
 form ion-item {
   margin-bottom: 18px;
   box-shadow: none;
@@ -59,25 +53,19 @@ body.dark form ion-item {
 }
 
 ion-button[type="submit"] {
-  margin-top: 18px; // Space above submit button
+  margin-top: 18px;
 }
 
-// Modal styling
 ion-modal {
   --border-radius: 18px;
   .modal-wrapper {
-    // For older Ionic versions, newer use shadow parts
     padding: 20px;
   }
-  // For newer Ionic versions, use ::part
   &::part(content) {
-    border-radius: var(
-      --border-radius
-    ); // Ensure content respects modal border radius
+    border-radius: var(--border-radius);
   }
 }
 
-// Action buttons (Add Task, Delete Completed)
 .add-task-btn,
 .delete-completed-btn {
   width: 100%;
@@ -100,7 +88,6 @@ ion-modal {
   --background-hover: var(--ion-color-danger-shade);
 }
 
-// Filter controls section
 .filter-controls {
   display: flex;
   align-items: center;
@@ -125,16 +112,9 @@ ion-modal {
   }
 }
 
-// Task list and items
 .task-list-container {
   padding-top: 8px;
 }
-
-.task-animation-wrapper {
-  // The animation itself handles enter/leave transitions.
-  // Static margin for spacing between items can be on task-card.
-}
-
 ion-card.task-card {
   cursor: pointer;
   margin-bottom: 24px;
@@ -203,7 +183,6 @@ ion-checkbox {
   word-break: break-word;
 }
 
-// Completed task text styling
 .completed-task {
   text-decoration: line-through;
   color: var(--ion-color-medium) !important;
@@ -222,10 +201,6 @@ ion-card-content {
   gap: 18px;
   margin-top: 2px;
   flex-wrap: wrap;
-
-  .task-meta-priority {
-    // margin-left: 16px; // Replaced by gap on .task-meta
-  }
 }
 
 .task-actions {
@@ -256,7 +231,6 @@ ion-card-content {
   }
 }
 
-// No tasks / Loading items
 .no-tasks-item,
 .loading-tasks-item {
   text-align: center;
@@ -267,7 +241,6 @@ ion-card-content {
   font-size: 1.1rem;
 }
 
-// Pagination
 .pagination-controls {
   margin-top: 22px;
   ion-button {
