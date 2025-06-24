@@ -107,7 +107,6 @@ src/
 | Frontend | Mobile | Development |
 |----------|--------|-------------|
 | Angular 17+ | Capacitor | TypeScript |
-| Ionic 7+ | Native APIs | RxJS |
 | SCSS | PWA Ready | Angular CLI |
 
 </div>
