@@ -132,42 +132,19 @@
       <ion-col size="12">
         <ion-item lines="none" class="filter-controls">
           <ion-input
-            placeholder="🔍 Search by title or description..."
+            type="text"
+            placeholder="🔍 Search..."
             [(ngModel)]="searchTerm"
             clearInput
             debounce="300"
           ></ion-input>
-          <ion-select
-            class="sort-by-select"
-            [(ngModel)]="sortBy"
-            interface="popover"
-            aria-label="Sort by"
-          >
-            <ion-select-option value="id">ID</ion-select-option>
-            <ion-select-option value="title">Title</ion-select-option>
-            <ion-select-option value="dueDate">Due Date</ion-select-option>
-            <ion-select-option value="priority">Priority</ion-select-option>
-          </ion-select>
-          <ion-select
-            class="sort-order-select"
-            [(ngModel)]="sortOrder"
-            interface="popover"
-            aria-label="Sort order"
-          >
-            <ion-select-option value="asc">Ascending</ion-select-option>
-            <ion-select-option value="desc">Descending</ion-select-option>
-          </ion-select>
-          <ion-button
-            class="reset-filters-button"
-            fill="clear"
-            (click)="resetFilters()"
-          >
-            <ion-icon
-              name="refresh-outline"
-              slot="icon-only"
-              aria-label="Reset filters"
-            ></ion-icon>
-          </ion-button>
+          <ion-label slot="end" class="toggle-label">Title</ion-label>
+          <ion-toggle
+            slot="end"
+            [(ngModel)]="searchByDescription"
+            (ionChange)="onToggleChange()"
+          ></ion-toggle>
+          <ion-label slot="end" class="toggle-label">Description</ion-label>
         </ion-item>
       </ion-col>
     </ion-row>

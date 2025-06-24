@@ -21,11 +21,12 @@ import {
   IonButtons,
   IonIcon,
   IonModal,
-  IonSelectOption,
   IonInput,
-  IonDatetime,
   IonSelect,
+  IonSelectOption,
+  IonDatetime,
   IonCheckbox,
+  IonToggle,
 } from '@ionic/angular/standalone';
 import { TasksService } from 'src/app/services/tasks/tasks.service';
 import { catchError } from 'rxjs';
@@ -62,11 +63,12 @@ import { trigger, transition, style, animate } from '@angular/animations';
     IonTitle,
     IonToolbar,
     IonCardContent,
-    IonSelectOption,
     IonInput,
+    IonSelect,
+    IonSelectOption,
     IonDatetime,
     IonIcon,
-    IonSelect,
+    IonToggle, // Add this import
     CommonModule,
     FormsModule,
   ],
@@ -102,84 +104,8 @@ export class TasksPagePage implements OnInit {
   editingTaskId: number | null = null;
   pageSize = 10;
   currentPage = 1;
-  searchTerm = '';
-  sortBy: 'id' | 'title' | 'dueDate' | 'priority' = 'id';
-  sortOrder: 'asc' | 'desc' = 'asc';
-
-  get totalPages(): number {
-    return Math.ceil(this.filteredAndSortedTasks.length / this.pageSize) || 1;
-  }
-
-  get filteredAndSortedTasks(): Task[] {
-    let tasks = this.taskItems();
-    if (this.searchTerm.trim()) {
-      const term = this.searchTerm.trim().toLowerCase();
-      tasks = tasks.filter(
-        (t) =>
-          t.title.toLowerCase().includes(term) ||
-          (t.description?.toLowerCase().includes(term) ?? false)
-      );
-    }
-    tasks = [...tasks].sort((a, b) => {
-      let cmp = 0;
-      if (this.sortBy === 'title') {
-        cmp = a.title.localeCompare(b.title);
-      } else if (this.sortBy === 'dueDate') {
-        cmp =
-          (a.dueDate ? new Date(a.dueDate).getTime() : 0) -
-          (b.dueDate ? new Date(b.dueDate).getTime() : 0);
-      } else if (this.sortBy === 'priority') {
-        const order = { low: 1, medium: 2, high: 3 };
-        cmp = order[a.priority ?? 'low'] - order[b.priority ?? 'low'];
-      } else if (this.sortBy === 'id') {
-        cmp = a.id - b.id;
-      }
-      return this.sortOrder === 'asc' ? cmp : -cmp;
-    });
-    return tasks;
-  }
-
-  get paginatedTasks(): Task[] {
-    const start = (this.currentPage - 1) * this.pageSize;
-    return this.filteredAndSortedTasks.slice(start, start + this.pageSize);
-  }
-
-  get paginationPages(): (number | string)[] {
-    const total = this.totalPages;
-    const current = this.currentPage;
-    const pages: (number | string)[] = [];
-    if (total <= 5) {
-      for (let i = 1; i <= total; i++) pages.push(i);
-      return pages;
-    }
-    if (current <= 3) {
-      pages.push(1, 2, 3);
-      if (current === 3) pages.push(4);
-      pages.push('...', total);
-      return pages;
-    }
-    if (current >= total - 2) {
-      pages.push(1, '...');
-      if (current === total - 2) pages.push(total - 3);
-      pages.push(total - 2, total - 1, total);
-      return pages;
-    }
-    pages.push(1, '...', current - 1, current, current + 1, '...', total);
-    return pages;
-  }
-
-  goToPage(page: number) {
-    if (this.filteredAndSortedTasks.length === 0) return;
-    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
-  }
-  nextPage() {
-    if (this.filteredAndSortedTasks.length === 0) return;
-    if (this.currentPage < this.totalPages) this.currentPage++;
-  }
-  prevPage() {
-    if (this.filteredAndSortedTasks.length === 0) return;
-    if (this.currentPage > 1) this.currentPage--;
-  }
+  searchTerm: string = '';
+  searchByDescription: boolean = false;
 
   ngOnInit(): void {
     this.taskService
@@ -315,13 +241,68 @@ export class TasksPagePage implements OnInit {
     };
     this.editingTaskId = null;
   }
-  resetFilters() {
-    this.sortBy = 'id';
-    this.sortOrder = 'asc';
-    this.searchTerm = '';
+
+  // --- Pagination logic ---
+  get totalPages(): number {
+    return Math.ceil(this.filteredTasks.length / this.pageSize) || 1;
   }
 
-  // For template: expose loading state as observable
+  get paginatedTasks(): Task[] {
+    const start = (this.currentPage - 1) * this.pageSize;
+    return this.filteredTasks.slice(start, start + this.pageSize);
+  }
+
+  get paginationPages(): (number | string)[] {
+    const total = this.totalPages;
+    const current = this.currentPage;
+    const pages: (number | string)[] = [];
+    if (total <= 5) {
+      for (let i = 1; i <= total; i++) pages.push(i);
+      return pages;
+    }
+    if (current <= 3) {
+      pages.push(1, 2, 3);
+      if (current === 3) pages.push(4);
+      pages.push('...', total);
+      return pages;
+    }
+    if (current >= total - 2) {
+      pages.push(1, '...');
+      if (current === total - 2) pages.push(total - 3);
+      pages.push(total - 2, total - 1, total);
+      return pages;
+    }
+    pages.push(1, '...', current - 1, current, current + 1, '...', total);
+    return pages;
+  }
+
+  goToPage(page: number) {
+    if (this.filteredTasks.length === 0) return;
+    if (page >= 1 && page <= this.totalPages) this.currentPage = page;
+  }
+  nextPage() {
+    if (this.filteredTasks.length === 0) return;
+    if (this.currentPage < this.totalPages) this.currentPage++;
+  }
+  prevPage() {
+    if (this.filteredTasks.length === 0) return;
+    if (this.currentPage > 1) this.currentPage--;
+  }
+
+  get filteredTasks(): Task[] {
+    let tasks = this.taskItems();
+    if (this.searchTerm.trim()) {
+      const term = this.searchTerm.trim().toLowerCase();
+      if (this.searchByDescription) {
+        tasks = tasks.filter(
+          (t) => t.description?.toLowerCase().includes(term));
+      } else {
+        tasks = tasks.filter((t) => t.title.toLowerCase().includes(term));
+      }
+    }
+    return tasks;
+  }
+
   get isLoading$() {
     return this.taskService.isLoading$;
   }
@@ -333,5 +314,10 @@ export class TasksPagePage implements OnInit {
       refreshOutline,
       createOutline,
     });
+  }
+
+  onToggleChange() {
+    // Clear search term and reset to first page when toggling
+    this.currentPage = 1;
   }
 }

@@ -91,24 +91,13 @@ ion-modal {
 .filter-controls {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 0;
-  background: transparent;
-  box-shadow: none;
 
   ion-input {
-    flex: 1 1 0;
-    min-width: 160px;
-    font-size: 1.05rem;
+    flex: 1;
   }
-  .sort-by-select,
-  .sort-order-select {
-    min-width: 110px;
-    max-width: 130px;
-  }
-  .reset-filters-button {
-    --padding-start: 8px;
-    --padding-end: 8px;
+  .toggle-label {
+    margin: 0 8px;
+    font-size: 0.95em;
   }
 }
 
