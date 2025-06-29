@@ -32,10 +32,10 @@ export class ContactPage {
     this.submitted = true;
     if (this.contactForm.valid) {
       this.success = true;
-      // Here you would normally send the data to your server or API
+      // Send data to console log (later replace with actual service call)
       console.log('Form Data:', this.contactForm.value);
 
-      // Reset form after submit (optional)
+      // Reset form after submit
       this.contactForm.reset();
       this.submitted = false;
     }

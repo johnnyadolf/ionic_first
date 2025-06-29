@@ -33,7 +33,7 @@
       <ion-input formControlName="email" type="email" required></ion-input>
     </ion-item>
     <ion-note
-      color="alert"
+      color="danger"
       *ngIf="(f.email.touched || submitted) && f.email.errors?.['required']"
       slot="error"
     >
@@ -61,8 +61,28 @@
 
     <ion-item>
       <ion-label position="floating">Message</ion-label>
-      <ion-textarea formControlName="message" rows="6"></ion-textarea>
+      <ion-textarea
+        formControlName="message"
+        type="text"
+        rows="6"
+        required
+        minlength="10"
+      ></ion-textarea>
     </ion-item>
+    <ion-note
+      color="danger"
+      *ngIf="(f.message.touched || submitted) && f.message.errors?.['required']"
+      slot="error"
+    >
+      Message is required
+    </ion-note>
+    <ion-note
+      color="danger"
+      *ngIf="(f.message.touched || submitted) && f.message.errors?.['minlength']"
+      slot="error"
+    >
+      Message must be at least 10 characters
+    </ion-note>
 
     <ion-button
       expand="block"
