@@ -61,13 +61,14 @@
 
     <ion-item>
       <ion-label position="floating">Message</ion-label>
-      <ion-textarea
-        formControlName="message"
-        type="text"
-        rows="6"
-        required
-        minlength="10"
-      ></ion-textarea>
+      <ion-input>
+        <ion-textarea
+          formControlName="message"
+          rows="6"
+          required
+          minlength="10"
+        ></ion-textarea>
+      </ion-input>
     </ion-item>
     <ion-note
       color="danger"
